@@ -17,21 +17,25 @@ ppl_nodes <- people %>%
                         ifelse(is.na(`Middle Names`),
                                paste(Forename, Surname),
                                paste(Forename, `Middle Names`, Surname)),
-                        "</b><p>Born on: ", DOB)) %>%
+                        "<p>Born on:</b> ", DOB,
+                        "<p><b>Education:</b> ", Education)) %>%
   rename(level = Level) %>%
-  select(id, label, shape, title, level)
+  select(id, label, shape, title, level, image)
 rel_nodes <- relationships %>%
   mutate(label = `Start Date`,
-         shape = "image",
+         shape = "circularImage",
          title = paste0("<b>From: ", `Start Date`,
                         ifelse(is.na(`End Date`), "", paste(" To:",
                                                             `End Date`)),
-                        "</b>"),
-         icon.face = "Ionicons",
-         icon.code = ifelse(Type == "Divorce", "heart-dislike", "heart")) %>%
+                        "</b>")) %>%
   rename(level = Level) %>%
-  select(id, label, shape, title, level)
-nodes <- rbind(ppl_nodes, rel_nodes) %>% select(id, label, level, shape)
+  select(id, label, shape, title, level, image)
+nodes <- rbind(ppl_nodes, rel_nodes) %>%
+  mutate(image = ifelse(is.na(image),
+                        paste0("https://images.racingpost.com/football/",
+                               "teambadges/2848.png"),
+                        image)) %>%
+  select(id, label, level, shape, title, image)
 # Create visualisation
 visNetwork(nodes, edges, width = "100%", height = "100vh") %>%
   # addIonicons() %>%
