@@ -32,8 +32,8 @@ rel_nodes <- relationships %>%
   select(id, label, shape, title, level, image)
 nodes <- rbind(ppl_nodes, rel_nodes) %>%
   mutate(image = ifelse(is.na(image),
-                        paste0("https://images.racingpost.com/football/",
-                               "teambadges/2848.png"),
+                        paste0("https://dl.dropboxusercontent.com/s/",
+                               "2i2ms6fpd6x2gs4/no-image.jpg"),
                         image)) %>%
   select(id, label, level, shape, title, image)
 # Create visualisation
